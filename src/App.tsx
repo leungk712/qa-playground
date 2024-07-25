@@ -24,6 +24,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 // ===== Components ===== //
+import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 
 // ===== Interfaces ===== //
@@ -133,79 +134,85 @@ function App() {
 
   return (
     <>
-      <Box sx={{ display: 'flex' }}>
-        <AppBar
-          position="fixed"
-          sx={{
-            zIndex: (theme) => theme.zIndex.drawer + 1,
-            bgcolor: '#00897b',
-          }}
-          open={open}
-        >
-          <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              aria-label="menu"
-              sx={{
-                mr: 2,
-                color: 'white',
-                ...(open && { display: 'none' }),
-              }}
-              onClick={() => handleDrawer(!open)}
-            >
-              <MenuIcon />
-            </IconButton>
+      {location.pathname !== '/' && location.pathname !== '/login' ? (
+        <Box sx={{ display: 'flex' }}>
+          <AppBar
+            position="fixed"
+            sx={{
+              zIndex: (theme) => theme.zIndex.drawer + 1,
+              bgcolor: '#00897b',
+            }}
+            open={open}
+          >
+            <Toolbar>
+              <IconButton
+                size="large"
+                edge="start"
+                aria-label="menu"
+                sx={{
+                  mr: 2,
+                  color: 'white',
+                  ...(open && { display: 'none' }),
+                }}
+                onClick={() => handleDrawer(!open)}
+              >
+                <MenuIcon />
+              </IconButton>
 
-            <Typography variant="h6" component="div">
-              QA Playground
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open} sx={{ width: drawerWidth }}>
-          <DrawerHeader sx={{ bgcolor: '#00897b' }}>
-            <IconButton onClick={() => handleDrawer(false)}>
-              {theme.direction === 'rtl' ? (
-                <ChevronRightIcon sx={{ color: 'white' }} />
-              ) : (
-                <ChevronLeftIcon sx={{ color: 'white' }} />
+              <Typography variant="h6" component="div">
+                QA Playground
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Drawer variant="permanent" open={open} sx={{ width: drawerWidth }}>
+            <DrawerHeader sx={{ bgcolor: '#00897b' }}>
+              <IconButton onClick={() => handleDrawer(false)}>
+                {theme.direction === 'rtl' ? (
+                  <ChevronRightIcon sx={{ color: 'white' }} />
+                ) : (
+                  <ChevronLeftIcon sx={{ color: 'white' }} />
+                )}
+              </IconButton>
+            </DrawerHeader>
+
+            <Divider />
+
+            <List>
+              {['Inbox', 'Starred', 'Send email', 'Drafts'].map(
+                (text, index) => (
+                  <ListItem key={text} disablePadding>
+                    <ListItemButton>
+                      <ListItemIcon>
+                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} />
+                    </ListItemButton>
+                  </ListItem>
+                )
               )}
-            </IconButton>
-          </DrawerHeader>
-
-          <Divider />
-
-          <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Drawer>
-      </Box>
+            </List>
+            <Divider />
+            <List>
+              {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </Drawer>
+        </Box>
+      ) : null}
 
       <Main open={open} sx={{ height: '100vh' }}>
         <Routes key={location.pathname} location={location}>
           <Route index={true} element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </Main>
     </>
