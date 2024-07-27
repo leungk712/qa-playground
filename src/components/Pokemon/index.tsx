@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react';
 
 // ===== Material UI ===== //
 import { Box, Typography } from '@mui/material';
-import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridToolbar,
+  GridColDef,
+  GridRenderCellParams,
+} from '@mui/x-data-grid';
 
 // ===== Components ===== //
 
@@ -63,9 +68,26 @@ export default function Pokemon() {
       },
     },
     {
+      field: 'pokedex',
+      headerName: 'Pokedex #',
+      flex: 0.1,
+      renderCell: (params: Params) => {
+        const pokedexNum = params.row.url
+          .split('pokemon/')
+          .pop()
+          .replace('/', '');
+
+        return (
+          <Box className="h-100" sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography>{pokedexNum}</Typography>
+          </Box>
+        );
+      },
+    },
+    {
       field: 'Image',
       headerName: 'Image',
-      flex: 0.1,
+      flex: 0.25,
       renderCell: (params: Params) => (
         <Box sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
           <Box
@@ -83,7 +105,7 @@ export default function Pokemon() {
     {
       field: 'url',
       headerName: 'Url',
-      flex: 0.8,
+      flex: 0.25,
       renderCell: (params: Params) => (
         <Box
           sx={{
@@ -121,6 +143,7 @@ export default function Pokemon() {
         columns={columns}
         checkboxSelection
         disableRowSelectionOnClick
+        slots={{ toolbar: GridToolbar }}
       />
     </Box>
   );
