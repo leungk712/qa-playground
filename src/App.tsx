@@ -25,6 +25,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 // ===== Components ===== //
 import Dashboard from './pages/Dashboard';
+import Pokemon from './pages/Pokemon';
 import Login from './pages/Login';
 
 // ===== Interfaces ===== //
@@ -213,6 +214,7 @@ function App() {
           <Route index={true} element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/pokemon" element={<Pokemon />} />
         </Routes>
       </Main>
     </>
