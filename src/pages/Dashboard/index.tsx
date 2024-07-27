@@ -1,5 +1,5 @@
 // ===== Material UI ===== //
-import { Box, Card, Stack, Typography } from '@mui/material';
+import { Card, Stack, Typography } from '@mui/material';
 
 // ===== Components ===== //
 
@@ -8,6 +8,10 @@ const actionItems = [
   {
     title: 'Pokemon',
     path: '/pokemon',
+  },
+  {
+    title: 'User',
+    path: '/user',
   },
 ];
 

@@ -13,7 +13,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText,
+  Tooltip,
   Typography,
   Toolbar,
 } from '@mui/material';
@@ -27,6 +27,11 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Dashboard from './pages/Dashboard';
 import Pokemon from './pages/Pokemon';
 import Login from './pages/Login';
+import User from './pages/User';
+
+// ===== Constants ===== //
+import { PATH, sidebar } from './constants/paths';
+const { LANDING, LOGIN } = PATH;
 
 // ===== Interfaces ===== //
 interface AppBarProps extends MuiAppBarProps {
@@ -34,7 +39,7 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 // ===== React Router ===== //
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 // ===== Styles ===== //
 const drawerWidth = 240;
@@ -126,6 +131,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 function App() {
   const theme = useTheme();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -133,9 +139,13 @@ function App() {
     setOpen(status);
   };
 
+  const handleSidebarClick = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <>
-      {location.pathname !== '/' && location.pathname !== '/login' ? (
+      {location.pathname !== LANDING && location.pathname !== LOGIN ? (
         <Box sx={{ display: 'flex' }}>
           <AppBar
             position="fixed"
@@ -179,29 +189,17 @@ function App() {
             <Divider />
 
             <List>
-              {['Inbox', 'Starred', 'Send email', 'Drafts'].map(
-                (text, index) => (
-                  <ListItem key={text} disablePadding>
-                    <ListItemButton>
+              {sidebar?.map((sidebarItem, index) => (
+                <ListItem key={sidebarItem.name} disablePadding sx={{ my: 1 }}>
+                  <Tooltip title={sidebarItem.name}>
+                    <ListItemButton
+                      onClick={() => handleSidebarClick(sidebarItem.path)}
+                    >
                       <ListItemIcon>
-                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                        <sidebarItem.icon />
                       </ListItemIcon>
-                      <ListItemText primary={text} />
                     </ListItemButton>
-                  </ListItem>
-                )
-              )}
-            </List>
-            <Divider />
-            <List>
-              {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
+                  </Tooltip>
                 </ListItem>
               ))}
             </List>
@@ -215,6 +213,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/pokemon" element={<Pokemon />} />
+          <Route path="/user" element={<User />} />
         </Routes>
       </Main>
     </>
