@@ -30,11 +30,15 @@ type Params = GridRenderCellParams<any, string>;
 export default function Pokemon() {
   const [rows, setRows] = useState<Pokemon[]>([]);
 
+  let isLoading = false;
+
   const handleUrlClick = (url: string) => {
     window.open(url, '_blank')!.focus();
   };
 
   useEffect(() => {
+    isLoading = true;
+
     async function fetchPokemon() {
       try {
         const response = await fetch(
@@ -50,6 +54,7 @@ export default function Pokemon() {
         const data = await response.json();
 
         setRows(data.results);
+        isLoading = false;
       } catch (err) {
         console.log('err', err);
       }
@@ -144,6 +149,7 @@ export default function Pokemon() {
         checkboxSelection
         disableRowSelectionOnClick
         slots={{ toolbar: GridToolbar }}
+        loading={isLoading}
       />
     </Box>
   );

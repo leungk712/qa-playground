@@ -13,6 +13,10 @@ const actionItems = [
     title: 'User',
     path: '/user',
   },
+  {
+    title: 'Space',
+    path: '/space',
+  },
 ];
 
 // ===== Helpers ===== //

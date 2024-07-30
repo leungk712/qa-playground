@@ -17,9 +17,8 @@ import {
   Typography,
   Toolbar,
 } from '@mui/material';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
-import InboxIcon from '@mui/icons-material/Inbox';
+
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
@@ -27,6 +26,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Dashboard from './pages/Dashboard';
 import Pokemon from './pages/Pokemon';
 import Login from './pages/Login';
+import Space from './pages/Space';
 import User from './pages/User';
 
 // ===== Constants ===== //
@@ -189,7 +189,7 @@ function App() {
             <Divider />
 
             <List>
-              {sidebar?.map((sidebarItem, index) => (
+              {sidebar?.map((sidebarItem) => (
                 <ListItem key={sidebarItem.name} disablePadding sx={{ my: 1 }}>
                   <Tooltip title={sidebarItem.name}>
                     <ListItemButton
@@ -214,6 +214,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/pokemon" element={<Pokemon />} />
           <Route path="/user" element={<User />} />
+          <Route path="/space" element={<Space />} />
         </Routes>
       </Main>
     </>
