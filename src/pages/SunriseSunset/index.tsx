@@ -1,7 +1,7 @@
 // ===== Material UI ===== //
 
 // ===== Components ===== //
-import Login from '../../components/Login';
+import SunriseSunset from '../../components/SunriseSunset';
 
 // ===== Constants ===== //
 
@@ -9,10 +9,10 @@ import Login from '../../components/Login';
 
 // ===== Interfaces ===== //
 
-// ===== React Router ===== //
+// ===== Redux ===== //
 
 // ===== Styles ===== //
 
-export default function LoginPage() {
-  return <Login />;
+export default function SunriseSunsetPage() {
+  return <SunriseSunset />;
 }

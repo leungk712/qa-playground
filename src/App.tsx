@@ -13,18 +13,26 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText,
+  Tooltip,
   Typography,
   Toolbar,
 } from '@mui/material';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
-import InboxIcon from '@mui/icons-material/Inbox';
+
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 // ===== Components ===== //
+import Dashboard from './pages/Dashboard';
+import Pokemon from './pages/Pokemon';
 import Login from './pages/Login';
+import Space from './pages/Space';
+import SunriseSunset from './pages/SunriseSunset';
+import User from './pages/User';
+
+// ===== Constants ===== //
+import { PATH, routes } from './constants/paths';
+const { LANDING, LOGIN } = PATH;
 
 // ===== Interfaces ===== //
 interface AppBarProps extends MuiAppBarProps {
@@ -32,7 +40,7 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 // ===== React Router ===== //
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 // ===== Styles ===== //
 const drawerWidth = 240;
@@ -124,6 +132,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 function App() {
   const theme = useTheme();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -131,81 +140,83 @@ function App() {
     setOpen(status);
   };
 
+  const handleSidebarClick = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <>
-      <Box sx={{ display: 'flex' }}>
-        <AppBar
-          position="fixed"
-          sx={{
-            zIndex: (theme) => theme.zIndex.drawer + 1,
-            bgcolor: '#00897b',
-          }}
-          open={open}
-        >
-          <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              aria-label="menu"
-              sx={{
-                mr: 2,
-                color: 'white',
-                ...(open && { display: 'none' }),
-              }}
-              onClick={() => handleDrawer(!open)}
-            >
-              <MenuIcon />
-            </IconButton>
+      {location.pathname !== LANDING && location.pathname !== LOGIN ? (
+        <Box sx={{ display: 'flex' }}>
+          <AppBar
+            position="fixed"
+            sx={{
+              zIndex: (theme) => theme.zIndex.drawer + 1,
+              bgcolor: '#00897b',
+            }}
+            open={open}
+          >
+            <Toolbar>
+              <IconButton
+                size="large"
+                edge="start"
+                aria-label="menu"
+                sx={{
+                  mr: 2,
+                  color: 'white',
+                  ...(open && { display: 'none' }),
+                }}
+                onClick={() => handleDrawer(!open)}
+              >
+                <MenuIcon />
+              </IconButton>
 
-            <Typography variant="h6" component="div">
-              QA Playground
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open} sx={{ width: drawerWidth }}>
-          <DrawerHeader sx={{ bgcolor: '#00897b' }}>
-            <IconButton onClick={() => handleDrawer(false)}>
-              {theme.direction === 'rtl' ? (
-                <ChevronRightIcon sx={{ color: 'white' }} />
-              ) : (
-                <ChevronLeftIcon sx={{ color: 'white' }} />
-              )}
-            </IconButton>
-          </DrawerHeader>
+              <Typography variant="h6" component="div">
+                QA Playground
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Drawer variant="permanent" open={open} sx={{ width: drawerWidth }}>
+            <DrawerHeader sx={{ bgcolor: '#00897b' }}>
+              <IconButton onClick={() => handleDrawer(false)}>
+                {theme.direction === 'rtl' ? (
+                  <ChevronRightIcon sx={{ color: 'white' }} />
+                ) : (
+                  <ChevronLeftIcon sx={{ color: 'white' }} />
+                )}
+              </IconButton>
+            </DrawerHeader>
 
-          <Divider />
+            <Divider />
 
-          <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Drawer>
-      </Box>
+            <List>
+              {routes?.map((route) => (
+                <ListItem key={route.name} disablePadding sx={{ my: 1 }}>
+                  <Tooltip title={route.name}>
+                    <ListItemButton
+                      onClick={() => handleSidebarClick(route.path)}
+                    >
+                      <ListItemIcon>
+                        <route.icon />
+                      </ListItemIcon>
+                    </ListItemButton>
+                  </Tooltip>
+                </ListItem>
+              ))}
+            </List>
+          </Drawer>
+        </Box>
+      ) : null}
 
       <Main open={open} sx={{ height: '100vh' }}>
         <Routes key={location.pathname} location={location}>
           <Route index={true} element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/pokemon" element={<Pokemon />} />
+          <Route path="/user" element={<User />} />
+          <Route path="/space" element={<Space />} />
+          <Route path="/sunrise-sunset" element={<SunriseSunset />} />
         </Routes>
       </Main>
     </>
