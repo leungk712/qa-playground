@@ -58,6 +58,7 @@ const reducer = (
 export default function UserProfile() {
   const [user, setUser] = useReducer(reducer, initialState);
   const [userSaved, setUserSaved] = useState<boolean>(false);
+  const [isBlurred, setIsBlurred] = useState<string[]>([]);
 
   const userInfo = useMemo(() => {
     return user;
@@ -105,6 +106,10 @@ export default function UserProfile() {
 
   const handleSave = () => {
     setUserSaved(true);
+  };
+
+  const handleSetIsBlurred = (value: string) => {
+    setIsBlurred((prev) => [...new Set([...prev, value])]);
   };
 
   return (
@@ -174,6 +179,7 @@ export default function UserProfile() {
             label="City"
             defaultValue={userInfo?.city}
             InputLabelProps={{ shrink: true }}
+            onBlur={() => handleSetIsBlurred('city')}
             onChange={(evt) => debouncedHandleInput(evt, 'city')}
           />
 
@@ -182,6 +188,13 @@ export default function UserProfile() {
             label="State"
             defaultValue={userInfo?.state}
             InputLabelProps={{ shrink: true }}
+            helperText="must be 2 characters (CO)"
+            error={
+              (isBlurred.includes('state') && userInfo?.state?.length !== 2) ||
+              (isBlurred.includes('state') &&
+                !/^[a-zA-Z]+$/.test(userInfo?.state as string))
+            }
+            onBlur={() => handleSetIsBlurred('state')}
             onChange={(evt) => debouncedHandleInput(evt, 'state')}
           />
 
@@ -190,6 +203,11 @@ export default function UserProfile() {
             label="Zipcode"
             defaultValue={userInfo?.zipcode}
             InputLabelProps={{ shrink: true }}
+            helperText="must be 5 digits (ex. 80112)"
+            error={
+              isBlurred.includes('zipcode') && userInfo?.zipcode?.length !== 5
+            }
+            onBlur={() => handleSetIsBlurred('zipcode')}
             onChange={(evt) => debouncedHandleInput(evt, 'zipcode')}
           />
         </Stack>
@@ -205,6 +223,19 @@ export default function UserProfile() {
               <DateField
                 label="Date of Birth"
                 defaultValue={dayjs(userInfo?.dateOfBirth) || null}
+                slotProps={{
+                  textField: {
+                    error:
+                      isBlurred.includes('dateOfBirth') &&
+                      !userInfo?.dateOfBirth,
+                    helperText:
+                      isBlurred.includes('dateOfBirth') &&
+                      !userInfo?.dateOfBirth
+                        ? 'date of birth must be set'
+                        : '',
+                  },
+                }}
+                onBlur={() => handleSetIsBlurred('dateOfBirth')}
                 onChange={(evt) => debouncedHandleInput(evt, 'dateOfBirth')}
               />
             </LocalizationProvider>
@@ -214,6 +245,12 @@ export default function UserProfile() {
               sx={{ ml: 2 }}
               defaultValue={userInfo?.phoneNumber}
               InputLabelProps={{ shrink: true }}
+              helperText="must be 10 digits"
+              error={
+                isBlurred.includes('phoneNumber') &&
+                userInfo?.phoneNumber?.length !== 10
+              }
+              onBlur={() => handleSetIsBlurred('phoneNumber')}
               onChange={(evt) => debouncedHandleInput(evt, 'phoneNumber')}
             />
           </Box>
