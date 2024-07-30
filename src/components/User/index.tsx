@@ -25,6 +25,14 @@ interface User {
 
 // ===== Styles ===== //
 
+export const isOnlyAlphabeticCharacters = (value: string) => {
+  return /^[a-zA-Z]+$/.test(value);
+};
+
+export const isNumeric = (value: string) => {
+  return /^-?\d+$/.test(value);
+};
+
 const initialState: User = {
   firstName: '',
   middleName: '',
@@ -64,6 +72,28 @@ export default function UserProfile() {
     return user;
   }, [user]);
 
+  const isFormValid = useMemo(() => {
+    const form = {
+      firstName: userInfo?.firstName && userInfo?.firstName?.length > 0,
+      lastName: userInfo?.lastName && userInfo?.lastName?.length > 0,
+      address1: userInfo?.address1 && userInfo?.address1?.length > 0,
+      city: userInfo?.city && userInfo?.city?.length > 0,
+      state:
+        userInfo?.state &&
+        userInfo?.state.length == 2 &&
+        isOnlyAlphabeticCharacters(userInfo?.state),
+      zipcode:
+        userInfo?.zipcode &&
+        userInfo?.zipcode.length === 5 &&
+        isNumeric(userInfo?.zipcode),
+      dateOfBirth: userInfo?.dateOfBirth && userInfo?.dateOfBirth?.length > 0,
+      phoneNumber:
+        userInfo?.phoneNumber && userInfo?.phoneNumber?.length === 10,
+    };
+
+    return Object.values(form)?.every((isValid) => isValid);
+  }, [userInfo]);
+
   const handleInput = useCallback(
     (
       evt:
@@ -75,7 +105,6 @@ export default function UserProfile() {
       if (evt && 'target' in evt) {
         const { value } = evt.target;
 
-        console.log('field', field, value);
         setUser({
           type: 'setField',
           field,
@@ -129,6 +158,7 @@ export default function UserProfile() {
           <TextField
             className="w-100"
             label="First Name"
+            required
             defaultValue={userInfo?.firstName}
             InputLabelProps={{ shrink: true }}
             onChange={(evt) => debouncedHandleInput(evt, 'firstName')}
@@ -145,6 +175,7 @@ export default function UserProfile() {
           <TextField
             className="w-100"
             label="Last Name"
+            required
             defaultValue={userInfo?.lastName}
             InputLabelProps={{ shrink: true }}
             onChange={(evt) => debouncedHandleInput(evt, 'lastName')}
@@ -160,6 +191,7 @@ export default function UserProfile() {
           <TextField
             className="w-100"
             label="Address"
+            required
             defaultValue={userInfo?.address1}
             InputLabelProps={{ shrink: true }}
             onChange={(evt) => debouncedHandleInput(evt, 'address1')}
@@ -177,6 +209,7 @@ export default function UserProfile() {
           <TextField
             className="w-100"
             label="City"
+            required
             defaultValue={userInfo?.city}
             InputLabelProps={{ shrink: true }}
             onBlur={() => handleSetIsBlurred('city')}
@@ -186,13 +219,14 @@ export default function UserProfile() {
           <TextField
             className="w-100"
             label="State"
+            required
             defaultValue={userInfo?.state}
             InputLabelProps={{ shrink: true }}
             helperText="must be 2 characters (CO)"
             error={
               (isBlurred.includes('state') && userInfo?.state?.length !== 2) ||
               (isBlurred.includes('state') &&
-                !/^[a-zA-Z]+$/.test(userInfo?.state as string))
+                !isOnlyAlphabeticCharacters(userInfo?.state as string))
             }
             onBlur={() => handleSetIsBlurred('state')}
             onChange={(evt) => debouncedHandleInput(evt, 'state')}
@@ -201,6 +235,7 @@ export default function UserProfile() {
           <TextField
             className="w-100"
             label="Zipcode"
+            required
             defaultValue={userInfo?.zipcode}
             InputLabelProps={{ shrink: true }}
             helperText="must be 5 digits (ex. 80112)"
@@ -223,6 +258,7 @@ export default function UserProfile() {
               <DateField
                 label="Date of Birth"
                 defaultValue={dayjs(userInfo?.dateOfBirth) || null}
+                required
                 slotProps={{
                   textField: {
                     error:
@@ -243,6 +279,7 @@ export default function UserProfile() {
             <TextField
               label="Phone Number"
               sx={{ ml: 2 }}
+              required
               defaultValue={userInfo?.phoneNumber}
               InputLabelProps={{ shrink: true }}
               helperText="must be 10 digits"
@@ -256,8 +293,9 @@ export default function UserProfile() {
           </Box>
 
           <Button
-            variant="outlined"
-            sx={{ width: 125 }}
+            variant="contained"
+            sx={{ width: 200, height: 50 }}
+            disabled={!isFormValid}
             onClick={() => handleSave()}
           >
             Save
