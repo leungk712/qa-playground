@@ -27,10 +27,11 @@ import Dashboard from './pages/Dashboard';
 import Pokemon from './pages/Pokemon';
 import Login from './pages/Login';
 import Space from './pages/Space';
+import SunriseSunset from './pages/SunriseSunset';
 import User from './pages/User';
 
 // ===== Constants ===== //
-import { PATH, sidebar } from './constants/paths';
+import { PATH, routes } from './constants/paths';
 const { LANDING, LOGIN } = PATH;
 
 // ===== Interfaces ===== //
@@ -189,14 +190,14 @@ function App() {
             <Divider />
 
             <List>
-              {sidebar?.map((sidebarItem) => (
-                <ListItem key={sidebarItem.name} disablePadding sx={{ my: 1 }}>
-                  <Tooltip title={sidebarItem.name}>
+              {routes?.map((route) => (
+                <ListItem key={route.name} disablePadding sx={{ my: 1 }}>
+                  <Tooltip title={route.name}>
                     <ListItemButton
-                      onClick={() => handleSidebarClick(sidebarItem.path)}
+                      onClick={() => handleSidebarClick(route.path)}
                     >
                       <ListItemIcon>
-                        <sidebarItem.icon />
+                        <route.icon />
                       </ListItemIcon>
                     </ListItemButton>
                   </Tooltip>
@@ -215,6 +216,7 @@ function App() {
           <Route path="/pokemon" element={<Pokemon />} />
           <Route path="/user" element={<User />} />
           <Route path="/space" element={<Space />} />
+          <Route path="/sunrise-sunset" element={<SunriseSunset />} />
         </Routes>
       </Main>
     </>

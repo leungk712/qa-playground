@@ -4,20 +4,9 @@ import { Card, Stack, Typography } from '@mui/material';
 // ===== Components ===== //
 
 // ===== Constants ===== //
-const actionItems = [
-  {
-    title: 'Pokemon',
-    path: '/pokemon',
-  },
-  {
-    title: 'User',
-    path: '/user',
-  },
-  {
-    title: 'Space',
-    path: '/space',
-  },
-];
+import { routes } from '../../constants/paths';
+
+const filteredRoutes = routes?.filter((route) => route.name !== 'Dashboard');
 
 // ===== Helpers ===== //
 
@@ -37,11 +26,11 @@ export default function Dashboard() {
 
   return (
     <Stack sx={{ mt: 8 }} direction="row" spacing={2}>
-      {actionItems?.map((action) => (
+      {filteredRoutes?.map((route) => (
         <Card
-          key={action.title}
+          key={route.name}
           sx={{
-            width: 250,
+            width: 300,
             height: 100,
             display: 'flex',
             justifyContent: 'center',
@@ -49,9 +38,9 @@ export default function Dashboard() {
             bgcolor: '#ffa726',
             cursor: 'pointer',
           }}
-          onClick={() => handleClick(action.path)}
+          onClick={() => handleClick(route.path)}
         >
-          <Typography variant="h4">{action.title}</Typography>
+          <Typography variant="h4">{route.name}</Typography>
         </Card>
       ))}
     </Stack>

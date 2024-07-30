@@ -136,7 +136,7 @@ export default function Pokemon() {
   ];
 
   return (
-    <Box sx={{ mt: 8, pb: 5 }}>
+    <Box sx={{ mt: 8, pb: 5, height: '100%' }}>
       <Typography variant="h4" sx={{ mb: 2 }}>
         Pokemon
       </Typography>

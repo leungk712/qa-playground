@@ -1,18 +1,21 @@
 // ===== Material UI ===== //
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import FolderSpecialOutlinedIcon from '@mui/icons-material/FolderSpecialOutlined';
-import LocalMoviesOutlinedIcon from '@mui/icons-material/LocalMoviesOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import RocketOutlinedIcon from '@mui/icons-material/RocketOutlined';
+import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 
 export const PATH = {
   LANDING: '/',
   LOGIN: '/',
   DASHBOARD: '/dashboard',
   POKEMON: '/pokemon',
+  USER: '/user',
+  SPACE: '/space',
+  SUNRISE_SUNSET: '/sunrise-sunset',
 };
 
-export const sidebar = [
+export const routes = [
   {
     name: 'Dashboard',
     path: '/dashboard',
@@ -34,8 +37,8 @@ export const sidebar = [
     icon: RocketOutlinedIcon,
   },
   {
-    name: 'Movies',
-    path: '/movies',
-    icon: LocalMoviesOutlinedIcon,
+    name: 'Sunrise - Sunset',
+    path: '/sunrise-sunset',
+    icon: WbSunnyOutlinedIcon,
   },
 ];
