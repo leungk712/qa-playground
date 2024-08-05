@@ -63,7 +63,11 @@ export default function SunriseSunset() {
   };
 
   return (
-    <Box sx={{ mt: 8 }}>
+    <Box sx={{ mt: 8, pb: 5, height: '100%' }}>
+      <Typography variant="h4" sx={{ mb: 2 }}>
+        Sunrise/Sunset
+      </Typography>
+
       <Autocomplete
         options={sortedCities}
         getOptionLabel={(option: City) => `${option?.name}`}

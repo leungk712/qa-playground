@@ -71,7 +71,11 @@ export default function Space() {
   }, []);
 
   return (
-    <Box sx={{ mt: 8 }}>
+    <Box sx={{ mt: 8, pb: 5 }}>
+      <Typography variant="h4" sx={{ mb: 2 }}>
+        Space
+      </Typography>
+
       {rows && rows?.length ? (
         <>
           {rows?.map((row: LaunchPad) => (
