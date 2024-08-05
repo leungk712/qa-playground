@@ -13,6 +13,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
+  ListItemText,
   Tooltip,
   Typography,
   Toolbar,
@@ -199,6 +200,11 @@ function App() {
                       <ListItemIcon>
                         <route.icon />
                       </ListItemIcon>
+
+                      <ListItemText
+                        primary={route.name}
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
                     </ListItemButton>
                   </Tooltip>
                 </ListItem>
